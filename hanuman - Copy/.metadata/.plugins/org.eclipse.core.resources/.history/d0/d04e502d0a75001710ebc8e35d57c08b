@@ -1,0 +1,78 @@
+package com.controller;
+
+import com.dao.BlogDAOService;
+import com.dao.user.UserDAOService;
+import com.model.*;
+
+
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.List;
+
+import javax.servlet.http.HttpServletRequest;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.messaging.handler.annotation.MessageMapping;
+import org.springframework.messaging.handler.annotation.SendTo;
+import org.springframework.messaging.simp.SimpMessagingTemplate;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+
+/**
+ * Created by sazzad on 2/11/16
+ */
+@Controller
+public class HomeController {
+
+	@Autowired
+	private BlogDAOService bs;
+	@Autowired
+	private UserDAOService us;
+	
+    String name;
+
+	@GetMapping("/home")
+	public String home(HttpServletRequest request,Model model){
+		
+		 name = SecurityContextHolder.getContext().getAuthentication().getName();
+		request.getSession().setAttribute("username", name);
+		List<Blog> blist=bs.getAllBlogs();
+		if(blist.size()>3)
+		  blist.subList(0,3);
+		   model.addAttribute("blist", blist);
+		   
+			List <User> ulist=us.getAllUsers(name);
+			
+			if(ulist.size()>3)
+				  ulist.subList(0,3);
+			model.addAttribute("ulist",ulist);
+			
+			
+		       List <Friend> Frilist= us.getFriendsReqOfUser(name);
+		       
+		   model.addAttribute("total",Frilist.size());
+		return "Home";
+	}
+
+
+    @MessageMapping("/hello")
+    @SendTo("/topic/messages")
+    public OutputMessage send(Message message) throws Exception {
+        String time = new SimpleDateFormat("HH:mm").format(new Date());
+        message.setFrom(name);
+        return new OutputMessage(message.getFrom(), message.getText(), time);
+    }
+
+  /*  @RequestMapping(value = "/simMessage")
+    public String greeting() throws Exception {
+        template.convertAndSend("/topic/greetings",
+                new GreeterService("Hello, Other!"));
+        return "sample";
+    }*/
+}

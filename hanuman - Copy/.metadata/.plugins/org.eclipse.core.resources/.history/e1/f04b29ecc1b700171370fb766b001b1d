@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+ <script type="text/javascript" src="/face/lib/Bootstrap/bootstrap.js"></script>
+<link rel="stylesheet" href="/face/lib/Bootstrap/bootstrap.min.css">
+ <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.4/angular.js"></script>
+    
+ 
+   
+   <script>
+   var myApp = angular.module('myApp', []);
+
+   myApp.controller('checkBoxController', function ($scope) {
+   		$scope.employees=[{name:'John', age:25, gender:'boy'},
+   							{name:'Jessie', age:30, gender:'girl'},
+   							{name:'Johanna', age:28, gender:'girl'},
+   							{name:'Joy', age:15, gender:'girl'},
+   							{name:'Mary', age:28, gender:'girl'},
+   							{name:'Peter', age:95, gender:'boy'},
+   							{name:'Sebastian', age:50, gender:'boy'},
+   							{name:'Erika', age:27, gender:'girl'},
+   							{name:'Patrick', age:40, gender:'boy'},
+   							{name:'Samantha', age:60, gender:'girl'}];
+   		$scope.selection=[];
+   		// toggle selection for a given employee by name
+   		$scope.toggleSelection = function toggleSelection(employeeName) {
+   	    var idx = $scope.selection.indexOf(employeeName);
+
+   	    // is currently selected
+   	    if (idx > -1) {
+   	      $scope.selection.splice(idx, 1);
+   	    }
+
+   	    // is newly selected
+   	    else {
+   	      $scope.selection.push(employeeName);
+   	    }
+   	  };
+   });
+   
+   </script>
+  </head>
+  <body>
+<div class="panel" ng-app="myApp" ng-controller="checkBoxController">
+	<h3 style="text-align:center;">AngularJS - Retrieve Multiple Checkbox Selected Options</h3>
+	 
+
+	<div class="check-box-panel">
+		<div ng-repeat="employee in employees">
+			<div class="action-checkbox">
+				<input id="{{employee.name}}" type="checkbox" value="{{employee.name}}" ng-checked="selection.indexOf(employee.name) > -1" ng-click="toggleSelection(employee.name)" />
+				<label for="{{employee.name}}"></label>
+				{{employee.name}}
+			</div>
+		</div>
+	</div>
+	<div class="selected-items-panel">
+	<span  class="selected-item">Selected Items:<span>
+		<div ng-repeat="name in selection" class="selected-item">
+		{{name}}
+		</div>
+	</div>
+</div>
+</body>
+</html>

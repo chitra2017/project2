@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+ <script type="text/javascript" src="/face/lib/Bootstrap/bootstrap.js"></script>
+<link rel="stylesheet" href="/face/lib/Bootstrap/bootstrap.min.css">
+ <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.4/angular.js"></script>
+    
+  <script src="/face/js/app.js"></script>
+   
+   <script>
+   var app1 = angular.module('app1', ['checklist-model']);
+   app1.controller('Ctrl1', function($scope) {
+     $scope.roles = [
+       'guest', 
+       'user', 
+       'customer', 
+       'admin'
+     ];
+     $scope.user = {
+    		    roles: ['user']
+    		  };
+   
+   });
+    
+   
+   </script>
+  </head>
+  <body>
+
+<div class="container" style="margin-left: 6cm;padding-top: 50px;">
+<div class="ng-scope" ng-app="app1" ng-controller="Ctrl1">   
+ 
+<label ng-repeat="role in roles">
+  <input type="checkbox" checklist-model="user.roles" checklist-value="role"> {{role}}
+</label>
+ 
+ </div>
+ </div>
+ </div>
+ </body>
+ </html>

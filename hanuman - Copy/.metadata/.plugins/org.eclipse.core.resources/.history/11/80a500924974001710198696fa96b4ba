@@ -1,0 +1,102 @@
+package com.controller;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+
+import java.io.BufferedOutputStream;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.util.List;
+import java.util.Map;
+
+import javax.servlet.ServletContext;
+import javax.servlet.http.HttpServletRequest;
+import javax.validation.Valid;
+
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.ui.ModelMap;
+import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.servlet.ModelAndView;
+
+import com.dao.*;
+
+import com.model.*;
+
+
+
+@Controller
+public class BlogController {
+	
+	//private static final Logger log=LoggerFactory.getLogger(BlogController.class);
+	
+	@Autowired
+	private BlogDAOService bs;
+	
+String name;
+
+	
+	
+	
+	@RequestMapping("/Blog")  
+    public String showform(Map<String, Object> model){  
+       
+		 Blog blog = new Blog();
+	        model.put("newBlog", blog);
+	        
+		return "Blog";
+      
+    }  
+ 
+    
+	
+
+    @RequestMapping(value="/createBlog",method = RequestMethod.POST)  
+	public String createUser( @Valid @ModelAttribute("newBlog") Blog newBlog ,BindingResult result, Map<String, Object> model, HttpServletRequest request)
+	{  
+		if (result.hasErrors()) {
+			
+    		return "Blog";
+    	
+    	
+    	}
+    	
+    	else
+    	{ 
+    		name =(String) request.getSession().getAttribute("username");
+    		boolean valid=bs.createBlog(newBlog,name);
+		return "Home";
+		}
+		
+	}
+		
+		  @RequestMapping(value="/viewBlog") 		  
+		  public String viewBlog(Model model)
+		  { List<Blog> blist=bs.getAllBlogs();
+			  
+		   model.addAttribute("blist", blist);
+		   return "ViewBlog";
+			  
+		  }
+		  
+		  
+		  
+	}
+    
+    
+    
+	
+}

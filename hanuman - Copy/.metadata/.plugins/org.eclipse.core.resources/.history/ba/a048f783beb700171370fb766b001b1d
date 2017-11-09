@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+ <script type="text/javascript" src="/face/lib/Bootstrap/bootstrap.js"></script>
+<link rel="stylesheet" href="/face/lib/Bootstrap/bootstrap.min.css">
+ <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.4/angular.js"></script>
+    
+  
+   <script>
+   var app1 = angular.module('app1', []);
+   app1.controller('Ctrl1', function($scope) {
+     $scope.roles = [
+       'guest', 
+       'user', 
+       'customer', 
+       'admin'
+     ];
+   
+   });
+    
+   
+   </script>
+  </head>
+  <body>
+
+
+
+	<div ng-include="'/face/common/header.html'"></div>
+<div class="container" style="margin-left: 6cm;padding-top: 50px;">
+<div class="ng-scope" ng-app="app1" ng-controller="Ctrl1">   
+        
+<div ng-repeat="role in roles">
+  {{role}}
+</div>  
+ </div>
+ </div>
+ </div>
+ </body>
+ </html>

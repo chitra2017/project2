@@ -1,0 +1,65 @@
+package com.dao.Forum;
+
+import java.util.Date;
+import java.util.List;
+
+
+
+import org.hibernate.SessionFactory;
+
+import org.springframework.stereotype.Repository;
+
+import com.dao.*;
+import com.model.*;
+
+
+public class ForumCommentDAOImpl implements ForumCommentDAO {
+	
+	
+	
+	private SessionFactory sessionFactory;
+	
+	ForumCommentDAOImpl(SessionFactory sessionFactory)
+	{
+		this.sessionFactory=sessionFactory;
+	}
+	public List<ForumComment> getAllComments(int forumID) {
+	return sessionFactory.getCurrentSession().createQuery("from Comment").list();
+	}
+
+	
+
+	public ForumComment addComment(int forumID,String comment_UserId,String commentData){
+			ForumComment comment=new Comment();
+			comment.setBlogID(blogID);
+			comment.setCommentUserId(comment_UserId);
+			comment.setCommentText(commentData);
+			comment.setCommentDate(new Date());
+			
+			sessionFactory.getCurrentSession().save(comment);
+		
+			System.out.println("ffasdff--------------------------------------------");
+			return comment;
+		
+	}
+
+
+	public boolean removeComment(long commentID) {
+		try{
+			sessionFactory.getCurrentSession().delete(getComment(commentID));
+			return true;
+		}
+		catch(Exception e){
+			System.err.println(e);
+			return false;
+		}
+	}
+
+	
+	public Comment getComment(long commentID){
+		return (Comment) sessionFactory.getCurrentSession().get(Comment.class, commentID);
+	}
+
+
+
+}

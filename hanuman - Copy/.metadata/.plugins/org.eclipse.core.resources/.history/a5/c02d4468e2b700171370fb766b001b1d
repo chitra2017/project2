@@ -1,0 +1,62 @@
+package com.dao.Forum;
+
+import java.io.File;
+import java.io.FileInputStream;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+
+//import javax.transaction.Transactional;
+
+import org.hibernate.SQLQuery;
+import org.hibernate.SessionFactory;
+
+import org.springframework.stereotype.Repository;
+
+import com.model.*;
+
+@Repository
+public class ForumDAOImpl implements ForumDAO {
+	
+	//private static final Logger log=LoggerFactory.getLogger(UserDAOImpl.class);
+	
+	private SessionFactory sessionFactory;
+	
+	ForumDAOImpl(SessionFactory sessionFactory)
+	{
+		this.sessionFactory=sessionFactory;
+	}
+
+	
+
+	public Forum createForum(String fname ,String fdata,List members){
+		try{
+			Forum f= new Forum();
+			f.setForumData(fdata);
+			f.setForumName(fname);
+			sessionFactory.getCurrentSession().save(f);
+			return forum;
+		}
+		catch(Exception e){
+			System.err.println(e);
+			return null;
+		}
+
+	}
+
+	public Forum getForumById(long ForumID) {
+		return  (Forum) sessionFactory.getCurrentSession().get(Forum.class, ForumID);
+	}
+
+	public List<Forum> getAllForum(String uid) {
+		return sessionFactory.getCurrentSession().createQuery("from Forum").list();
+	}
+
+	public List<Members> getMembers(long ForumID) {
+		Forum forum =getForumById(ForumID);
+		return forum.getForumMembers();
+	}
+
+	
+
+}

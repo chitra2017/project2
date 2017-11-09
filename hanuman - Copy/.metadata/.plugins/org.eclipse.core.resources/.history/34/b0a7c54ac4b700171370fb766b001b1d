@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+ <script type="text/javascript" src="/face/lib/Bootstrap/bootstrap.js"></script>
+<link rel="stylesheet" href="/face/lib/Bootstrap/bootstrap.min.css">
+ <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.4/angular.js"></script>
+     
+  <script src="/face/js/app.js"></script>
+  </head>
+  <body>
+<div ng-app="myApp" ng-controller="locationCtrl">
+
+
+	<div ng-include="'/face/common/header.html'"></div>
+	<div class="container" style="margin-left: 6cm;padding-top: 50px;" ng-app="myApp" ng-controller="myCtrl">
+	<b>Mutual Friends</b>
+	<div ng-init="getFriends(sparam);">
+	
+  	
+   		<div ng-repeat="user in friendlist" >
+ 		
+				<input id="{{user.friendId}}" type="checkbox" value="{{user.friendId}}" ng-checked="selection.indexOf(user.friendId)) > -1" ng-click="toggleSelection(user.friendId)" />
+				
+				{{user.friendId}}
+			
+	
+		</div>
+	
+	
+	Selected Items
+		<div ng-repeat="name in selection" class="selected-item">
+		{{name}}
+		</div>
+
+</div>
+</div>
+</div>
+</body>
+</html>
+

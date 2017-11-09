@@ -1,0 +1,16 @@
+package com.model;
+
+import java.io.Serializable;
+
+import javax.persistence.Embeddable;
+import javax.persistence.Transient;
+
+@Embeddable
+public class Members  implements Serializable {
+	
+	@Transient
+	private String ForumID;
+	
+	private String memberId;
+		
+	}
